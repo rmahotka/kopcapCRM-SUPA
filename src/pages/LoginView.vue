@@ -12,7 +12,7 @@
           <label for="username" class="mb-2 text-sm text-slate-800">Ваш Email</label>
           <InputText
             id="username"
-            v-model="valueLogin"
+            v-model="form.valueLogin"
             aria-describedby="username-help"
             placeholder="Введите свой email"
             class="h-10"
@@ -22,7 +22,7 @@
           <label for="password" class="mb-2 text-sm text-slate-800">Пароль</label>
           <Password
             id="password"
-            v-model="valuePassword"
+            v-model="form.valuePassword"
             :feedback="false"
             toggleMask
             placeholder="Введите свой пароль"
@@ -54,28 +54,24 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { supabase } from '@/config/supabase'
+import useAuthUser from '@/config/UseAuthUser'
 import { useRouter } from 'vue-router'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
 
-const valueLogin = ref(null)
-const valuePassword = ref(null)
 const router = useRouter()
+const { login } = useAuthUser()
+
+const form = ref({
+  valueLogin: '',
+  valuePassword: ''
+})
 
 const handleSignin = async () => {
   try {
-    const { data } = await supabase.auth.signInWithPassword({
-      email: valueLogin.value,
-      password: valuePassword.value
-    })
-
-    if (data.user && data.session) {
-      router.push({
-        name: 'Homepanel'
-      })
-    }
-  } catch (e) {
-    console.log(e)
+    await login(form.value)
+    router.push({ name: 'Homepanel' })
+  } catch (error: any) {
+    alert(error.message)
   }
 }
 </script>

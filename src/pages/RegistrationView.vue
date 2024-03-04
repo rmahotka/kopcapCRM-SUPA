@@ -9,14 +9,24 @@
         </p>
       </div>
 
-      <form @submit.prevent="handleSignup" class="flex flex-col mt-12 max-w-80 w-full">
+      <form @submit.prevent="handleSubmit" class="flex flex-col mt-12 max-w-80 w-full">
         <div class="flex flex-col">
-          <label for="username" class="mb-2 text-sm text-slate-800">Email</label>
+          <label for="usermail" class="mb-2 text-sm text-slate-800">Email</label>
           <InputText
-            id="username"
-            v-model="valueLogin"
+            id="usermail"
+            v-model="form.valueMail"
             aria-describedby="username-help"
             placeholder="Введите email"
+            class="h-10"
+          />
+        </div>
+        <div class="flex flex-col mt-4">
+          <label for="username" class="mb-2 text-sm text-slate-800">Логин</label>
+          <InputText
+            id="username"
+            v-model="form.valueUserNanme"
+            aria-describedby="username-help"
+            placeholder="Введите логин"
             class="h-10"
           />
         </div>
@@ -24,21 +34,10 @@
           <label for="password" class="mb-2 text-sm text-slate-800">Пароль</label>
           <Password
             id="password"
-            v-model="valuePassword"
+            v-model="form.valuePassword"
             :feedback="false"
             toggleMask
             placeholder="Придумайте пароль"
-            class="h-10"
-          />
-        </div>
-        <div class="card flex flex-col mt-4">
-          <label for="phone" class="mb-2 text-sm text-slate-800">Телефона</label>
-          <InputMask
-            id="phone"
-            v-model="valuePhone"
-            aria-describedby="userphone-help"
-            mask="(99)999-99-99"
-            placeholder="Введите номер телефона"
             class="h-10"
           />
         </div>
@@ -64,32 +63,27 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { supabase } from '@/config/supabase'
+import useAuthUser from '@/config/UseAuthUser'
 import { useRouter } from 'vue-router'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
 
-const valueLogin = ref(null)
-const valuePassword = ref(null)
-const valuePhone: any = ref(null)
 const router = useRouter()
+const { register } = useAuthUser()
 
-const handleSignup = async () => {
+const form = ref({
+  valueMail: '',
+  valuePassword: '',
+  valueUserNanme: ''
+})
+
+const handleSubmit = async () => {
   try {
-    const { data } = await supabase.auth.signUp({
-      email: valueLogin.value,
-      password: valuePassword.value,
-      phone: valuePhone.value
+    await register(form.value)
+    router.push({
+      name: 'login'
     })
-    if (data) {
-      valueLogin.value = null
-      valuePassword.value = null
-
-      router.push({
-        name: 'login'
-      })
-    }
   } catch (error: any) {
-    alert(error.error_description || error.message)
+    alert(error.message)
   }
 }
 </script>

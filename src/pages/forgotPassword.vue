@@ -8,7 +8,7 @@
         <p class="text-slate-600 text-sm">Мы отправим на него ссылку для восстановления пароля</p>
       </div>
 
-      <form action="" class="flex flex-col mt-12 max-w-80 w-full">
+      <form @submit.prevent="handlePasswordReset" class="flex flex-col mt-12 max-w-80 w-full">
         <div class="flex flex-col">
           <label for="username" class="mb-2 text-sm text-slate-800">Ваш Email</label>
           <InputText
@@ -19,7 +19,12 @@
             class="h-10"
           />
         </div>
-        <Button label="Отправить" class="w-full mt-9 h-10 text-sm" aria-label="Отправить" />
+        <Button
+          type="submit"
+          label="Отправить"
+          class="w-full mt-9 h-10 text-sm"
+          aria-label="Отправить"
+        />
       </form>
     </div>
     <div>
@@ -47,9 +52,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import useAuthUser from '@/config/UseAuthUser'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
 
+const { sendPasswordRestEmail } = useAuthUser()
+
 const valueLogin = ref<string>('')
+
+const handlePasswordReset = async () => {
+  await sendPasswordRestEmail(valueLogin.value)
+  alert(`Password reset email sent to: ${valueLogin.value}`)
+}
 </script>
 
 <style scoped>

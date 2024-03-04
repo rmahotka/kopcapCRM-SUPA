@@ -18,7 +18,7 @@
           aria-haspopup="true"
           aria-controls="overlay_menu"
         >
-          <span class="text-sm">Роман Махотка</span>
+          <span class="text-sm">{{}}</span>
           <Menu ref="menuAvatar" id="overlay_menu" :model="itemsMenuAvatar" :popup="true" />
           <div class="pi pi-angle-down"></div>
         </div>
@@ -28,8 +28,12 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { supabase } from '@/config/supabase'
+import useAuthUser from '@/config/UseAuthUser'
 import { useRouter } from 'vue-router'
+
+const { logout, user } = useAuthUser()
+
+// const mailHead = user._rawValue.email
 
 const valueSearch = ref<string>('')
 const menuAvatar = ref()
@@ -60,7 +64,7 @@ const itemsMenuAvatar = ref<menyType[]>([
         label: 'Выход',
         icon: 'pi pi-sign-out',
         command: () => {
-          signOut()
+          logout()
         }
       }
     ]
