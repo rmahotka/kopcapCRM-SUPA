@@ -9,10 +9,18 @@
 
       <form @submit.prevent="handleSignin" class="flex flex-col mt-12 max-w-80 w-full">
         <div class="flex flex-col">
+          <InlineMessage
+            class="absolute top-[-60%] right-[-60%]"
+            v-if="errMessage"
+            severity="error"
+          >
+            {{ errMessage }}
+          </InlineMessage>
+
           <label for="username" class="mb-2 text-sm text-slate-800">Ваш Email</label>
           <InputText
             id="username"
-            v-model="form.valueLogin"
+            v-model="email"
             aria-describedby="username-help"
             placeholder="Введите свой email"
             class="h-10"
@@ -22,7 +30,7 @@
           <label for="password" class="mb-2 text-sm text-slate-800">Пароль</label>
           <Password
             id="password"
-            v-model="form.valuePassword"
+            v-model="password"
             :feedback="false"
             toggleMask
             placeholder="Введите свой пароль"
@@ -54,24 +62,29 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import useAuthUser from '@/config/UseAuthUser'
+import { supabase } from '@/config/supabase'
 import { useRouter } from 'vue-router'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
 
 const router = useRouter()
-const { login } = useAuthUser()
 
-const form = ref({
-  valueLogin: '',
-  valuePassword: ''
-})
+const email = ref(null)
+const password = ref(null)
+const errMessage = ref(null)
 
 const handleSignin = async () => {
   try {
-    await login(form.value)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value
+    })
+    if (error) throw error
     router.push({ name: 'Homepanel' })
-  } catch (error: any) {
-    alert(error.message)
+  } catch (error) {
+    errMessage.value = `ERROR: ${error.message}`
+    setTimeout(() => {
+      errMessage.value = null
+    }, 5000)
   }
 }
 </script>

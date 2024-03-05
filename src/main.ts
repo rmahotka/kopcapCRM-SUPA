@@ -19,6 +19,8 @@ import Tag from 'primevue/tag'
 import Button from 'primevue/button'
 import Password from 'primevue/password'
 import InputMask from 'primevue/inputmask'
+import Message from 'primevue/message'
+import InlineMessage from 'primevue/inlinemessage'
 
 import App from './App.vue'
 
@@ -39,5 +41,7 @@ app.component('Tag', Tag)
 app.component('Button', Button)
 app.component('Password', Password)
 app.component('InputMask', InputMask)
+app.component('Message', Message)
+app.component('InlineMessage', InlineMessage)
 
 app.mount('#app')

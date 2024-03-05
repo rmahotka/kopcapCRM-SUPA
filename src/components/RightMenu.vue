@@ -43,22 +43,32 @@ const activeLabel = ref<number>(1)
 const buttonLabel = ref<btnType[]>([
   {
     id: 1,
-    label: 'Кнопка 1',
+    label: 'Проекты',
     icon: 'pi pi-home'
   },
   {
     id: 2,
-    label: 'Кнопка 2',
+    label: 'Клиенты',
     icon: 'pi pi-list'
   },
   {
     id: 3,
-    label: 'Кнопка 3',
+    label: 'Статистика',
     icon: 'pi pi-file'
   },
   {
     id: 4,
-    label: 'Кнопка 4',
+    label: 'Новый проект',
+    icon: 'pi pi-file'
+  },
+  {
+    id: 5,
+    label: 'Настройки',
+    icon: 'pi pi-comment'
+  },
+  {
+    id: 6,
+    label: 'Помощь',
     icon: 'pi pi-comment'
   }
 ])

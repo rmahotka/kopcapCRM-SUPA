@@ -9,24 +9,26 @@
         </p>
       </div>
 
-      <form @submit.prevent="handleSubmit" class="flex flex-col mt-12 max-w-80 w-full">
+      <form
+        @submit.prevent="handleSubmit"
+        class="flex flex-col mt-12 max-w-80 w-full relative"
+        v-auto-animate
+      >
         <div class="flex flex-col">
+          <InlineMessage
+            class="absolute top-[-60%] right-[-60%]"
+            v-if="errMessage"
+            severity="error"
+          >
+            {{ errMessage }}
+          </InlineMessage>
+
           <label for="usermail" class="mb-2 text-sm text-slate-800">Email</label>
           <InputText
             id="usermail"
-            v-model="form.valueMail"
+            v-model="email"
             aria-describedby="username-help"
             placeholder="Введите email"
-            class="h-10"
-          />
-        </div>
-        <div class="flex flex-col mt-4">
-          <label for="username" class="mb-2 text-sm text-slate-800">Логин</label>
-          <InputText
-            id="username"
-            v-model="form.valueUserNanme"
-            aria-describedby="username-help"
-            placeholder="Введите логин"
             class="h-10"
           />
         </div>
@@ -34,7 +36,18 @@
           <label for="password" class="mb-2 text-sm text-slate-800">Пароль</label>
           <Password
             id="password"
-            v-model="form.valuePassword"
+            v-model="password"
+            :feedback="false"
+            toggleMask
+            placeholder="Придумайте пароль"
+            class="h-10"
+          />
+        </div>
+        <div class="card flex flex-col mt-4">
+          <label for="confirmPassword" class="mb-2 text-sm text-slate-800">Пароль</label>
+          <Password
+            id="confirmPassword"
+            v-model="confirmPassword"
             :feedback="false"
             toggleMask
             placeholder="Придумайте пароль"
@@ -63,28 +76,38 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import useAuthUser from '@/config/UseAuthUser'
+import { supabase } from '@/config/supabase'
 import { useRouter } from 'vue-router'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
+import { errorMessages } from 'vue/compiler-sfc'
 
 const router = useRouter()
-const { register } = useAuthUser()
 
-const form = ref({
-  valueMail: '',
-  valuePassword: '',
-  valueUserNanme: ''
-})
+const email = ref(null)
+const password = ref(null)
+const confirmPassword = ref(null)
+const errMessage = ref(null)
 
 const handleSubmit = async () => {
-  try {
-    await register(form.value)
-    router.push({
-      name: 'login'
-    })
-  } catch (error: any) {
-    alert(error.message)
+  if (password.value === confirmPassword.value) {
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: email.value,
+        password: password.value
+      })
+      if (error) throw error
+      router.push({ name: 'login' })
+    } catch (error: any) {
+      errorMessages.value = error.message
+      setTimeout(() => {
+        errMessage.value = null
+      }, 5000)
+    }
   }
+  errMessage.value = 'Ошибка, попробуйте снова'
+  setTimeout(() => {
+    errMessage.value = null
+  }, 5000)
 }
 </script>
 

@@ -27,18 +27,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
-import useAuthUser from '@/config/UseAuthUser'
+import { ref, onMounted, watch } from 'vue'
+import { supabase } from '@/config/supabase'
 import { useRouter } from 'vue-router'
-
-const { logout, user } = useAuthUser()
-
-// const mailHead = user._rawValue.email
+import { useUserStore } from '@/stores/users'
 
 const valueSearch = ref<string>('')
 const menuAvatar = ref()
 
 const router = useRouter()
+const getUser = useUserStore()
+
+console.log(getUser.userEmail)
 
 interface menyType {
   label: string
@@ -71,11 +71,9 @@ const itemsMenuAvatar = ref<menyType[]>([
   }
 ])
 
-const signOut = async () => {
-  const { error } = await supabase.auth.signOut()
-  router.push({
-    name: 'login'
-  })
+const logout = async () => {
+  await supabase.auth.signOut()
+  router.push({ name: 'login' })
 }
 
 const toggle = (event: any) => {

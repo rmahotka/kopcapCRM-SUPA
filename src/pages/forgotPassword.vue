@@ -52,16 +52,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import useAuthUser from '@/config/UseAuthUser'
+import { supabase } from '@/config/supabase'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
-
-const { sendPasswordRestEmail } = useAuthUser()
 
 const valueLogin = ref<string>('')
 
 const handlePasswordReset = async () => {
-  await sendPasswordRestEmail(valueLogin.value)
-  alert(`Password reset email sent to: ${valueLogin.value}`)
+  const { data, error } = await supabase.auth.resetPasswordForEmail(valueLogin, {})
 }
 </script>
 
