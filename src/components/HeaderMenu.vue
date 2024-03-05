@@ -27,18 +27,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref } from 'vue'
 import { supabase } from '@/config/supabase'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/users'
 
 const valueSearch = ref<string>('')
 const menuAvatar = ref()
 
 const router = useRouter()
-const getUser = useUserStore()
-
-console.log(getUser.userEmail)
 
 interface menyType {
   label: string
