@@ -10,69 +10,69 @@
     <div class="flex items-center">
       <p class="pi pi-bell mr-3 cursor-pointer"></p>
 
-      <div class="flex items-center border-l">
-        <Avatar label="P" class="mr-2 ml-3" shape="circle" />
-        <div
-          class="flex items-center gap-2 cursor-pointer duration-200 hover:text-blue-500"
-          @click="toggle"
-          aria-haspopup="true"
-          aria-controls="overlay_menu"
-        >
-          <span class="text-sm">{{}}</span>
-          <Menu ref="menuAvatar" id="overlay_menu" :model="itemsMenuAvatar" :popup="true" />
-          <div class="pi pi-angle-down"></div>
+      <div class="flex items-center border-l gap-3">
+        <div @click="visible = true" class="cursor-pointer">
+          <Avatar label="P" class="mr-2 ml-3 cursor-pointe" shape="circle" />
+          <span class="text-sm font-bold">{{ `rm` }}</span>
         </div>
+
+        <Dialog
+          v-model:visible="visible"
+          maximizable
+          modal
+          header="Профиль"
+          :style="{ width: '50rem' }"
+          :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+        >
+          <form action="">
+            <Dropdown
+              v-model="selectedRole"
+              :options="roles"
+              optionLabel="name"
+              placeholder="Выберите роль"
+            />
+            <InputText type="text" v-model="firstName" />
+            <InputText type="text" v-model="lastName" />
+          </form>
+        </Dialog>
+
+        <i class="pi pi-sign-in cursor-pointer hover:text-blue-500" @click="logout"></i>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { supabase } from '@/config/supabase'
 import { useRouter } from 'vue-router'
 
 const valueSearch = ref<string>('')
-const menuAvatar = ref()
+const visible = ref(false)
+const roles = ref([])
+const selectedRole = ref()
+const userInfo = ref([])
+// const firstName = ref('')
+// const lastName = ref('')
 
 const router = useRouter()
 
-interface menyType {
-  label: string
-  items: {
-    label: string
-    icon: string
-  }[]
+const getRole = async () => {
+  const { data } = await supabase.from('role').select()
+  roles.value = data
 }
 
-const itemsMenuAvatar = ref<menyType[]>([
-  {
-    label: 'Меню',
-    items: [
-      {
-        label: 'Мой профель',
-        icon: 'pi pi-user'
-      },
-      {
-        label: 'Редактировать профиля',
-        icon: 'pi pi-pencil'
-      },
-      {
-        label: 'Выход',
-        icon: 'pi pi-sign-out',
-        command: () => {
-          logout()
-        }
-      }
-    ]
-  }
-])
+// !!!!!!!!!!!!!!!!!!
+const getUSer = async () => {
+  const { data } = await supabase.from('user').select()
+  userInfo.value = data
+}
+onMounted(() => {
+  getRole()
+  getUSer()
+})
 
 const logout = async () => {
   await supabase.auth.signOut()
   router.push({ name: 'login' })
-}
-
-const toggle = (event: any) => {
-  menuAvatar.value.toggle(event)
 }
 </script>

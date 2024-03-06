@@ -10,5 +10,5 @@ export const useUserStore = defineStore('user', () => {
     state.user = payload ? payload.user : null;
   }
 
-  return { state, setUser, userEmail }
+  return { state, setUser }
 })

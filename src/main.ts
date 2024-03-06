@@ -21,6 +21,8 @@ import Password from 'primevue/password'
 import InputMask from 'primevue/inputmask'
 import Message from 'primevue/message'
 import InlineMessage from 'primevue/inlinemessage'
+import Dialog from 'primevue/dialog'
+import Dropdown from 'primevue/dropdown'
 
 import App from './App.vue'
 
@@ -43,5 +45,7 @@ app.component('Password', Password)
 app.component('InputMask', InputMask)
 app.component('Message', Message)
 app.component('InlineMessage', InlineMessage)
+app.component('Dialog', Dialog)
+app.component('Dropdown', Dropdown)
 
 app.mount('#app')
