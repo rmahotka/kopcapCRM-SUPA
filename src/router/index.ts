@@ -5,6 +5,11 @@ import ForgotPassword from '@/pages/ForgotPassword.vue'
 import HomePanel from '@/pages/HomePanel.vue'
 import WorkPanel from '@/layouts/WorkPanel.vue'
 import SignForm from '@/layouts/SignForm.vue'
+import Statistic from '@/pages/Statistic.vue'
+import newProekt from '@/pages/NewProject.vue'
+import Settings from '@/pages/Settings.vue'
+import Help from '@/pages/Help.vue'
+import CompanyPanel from '@/pages/CompanyPanel.vue'
 
 const routes = [
   {
@@ -25,7 +30,14 @@ const routes = [
       requiresAuth: true,
       auth: true
     },
-    children: [{ path: '', component: HomePanel, name: 'Homepanel' }]
+    children: [
+      { path: '', component: HomePanel, name: 'Homepanel' },
+      { path: 'companyPanel', component: CompanyPanel, name: 'Companypanel' },
+      { path: 'statistic', component: Statistic, name: 'statistic' },
+      { path: 'newProekt', component: newProekt, name: 'newProekt' },
+      { path: 'settings', component: Settings, name: 'settings' },
+      { path: 'help', component: Help, name: 'help' }
+    ]
   }
 ]
 

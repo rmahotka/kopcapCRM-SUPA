@@ -12,16 +12,18 @@
     <nav class="mt-8">
       <ul class="flex flex-col gap-1">
         <li v-for="btn in buttonLabel" :key="btn.id">
-          <ButtonUi
-            @click="
-              () => {
-                activeLabel = btn.id
-              }
-            "
-            :label="btn.label"
-            :icon="btn.icon"
-            :active="btn.id === activeLabel"
-          />
+          <router-link :to="btn.linkRouter">
+            <ButtonUi
+              @click="
+                () => {
+                  activeLabel = btn.id
+                }
+              "
+              :label="btn.label"
+              :icon="btn.icon"
+              :active="btn.id === activeLabel"
+            />
+          </router-link>
         </li>
       </ul>
     </nav>
@@ -44,32 +46,38 @@ const buttonLabel = ref<btnType[]>([
   {
     id: 1,
     label: 'Проекты',
-    icon: 'pi pi-home'
+    icon: 'pi pi-home',
+    linkRouter: '/'
   },
   {
     id: 2,
     label: 'Клиенты',
-    icon: 'pi pi-list'
+    icon: 'pi pi-list',
+    linkRouter: 'companyPanel'
   },
   {
     id: 3,
     label: 'Статистика',
-    icon: 'pi pi-file'
+    icon: 'pi pi-file',
+    linkRouter: 'statistic'
   },
   {
     id: 4,
     label: 'Новый проект',
-    icon: 'pi pi-file'
+    icon: 'pi pi-file',
+    linkRouter: 'newProekt'
   },
   {
     id: 5,
-    label: 'Настройки',
-    icon: 'pi pi-comment'
+    label: 'Пользователи',
+    icon: 'pi pi-comment',
+    linkRouter: 'settings'
   },
   {
     id: 6,
     label: 'Помощь',
-    icon: 'pi pi-comment'
+    icon: 'pi pi-comment',
+    linkRouter: 'help'
   }
 ])
 </script>

@@ -11,28 +11,28 @@
       <p class="pi pi-bell mr-3 cursor-pointer"></p>
 
       <div class="flex items-center border-l gap-3">
-        <div @click="visible = true" class="cursor-pointer">
-          <Avatar label="P" class="mr-2 ml-3 cursor-pointe" shape="circle" />
-          <span class="text-sm font-bold">{{ `rm` }}</span>
+        <div @click="visible = true" class="cursor-pointer flex items-center">
+          <Avatar
+            label=""
+            class="mr-2 ml-3 cursor-pointe"
+            shape="circle"
+            :image="userInfo.imgUser"
+          />
+          <span class="text-sm font-bold">{{ userInfo.firstName }}</span>
         </div>
 
         <Dialog
           v-model:visible="visible"
-          maximizable
           modal
           header="Профиль"
           :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
         >
-          <form action="">
-            <Dropdown
-              v-model="selectedRole"
-              :options="roles"
-              optionLabel="name"
-              placeholder="Выберите роль"
-            />
-            <InputText type="text" v-model="firstName" />
-            <InputText type="text" v-model="lastName" />
+          <form action="" class="flex flex-col gap-2">
+            <InputText type="text" v-model="userInfo.firstName" />
+            <InputText type="text" v-model="userInfo.lastName" />
+
+            <Button @click="updateUser">Сохранить</Button>
           </form>
         </Dialog>
 
@@ -42,17 +42,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { supabase } from '@/config/supabase'
 import { useRouter } from 'vue-router'
 
 const valueSearch = ref<string>('')
 const visible = ref(false)
 const roles = ref([])
-const selectedRole = ref()
-const userInfo = ref([])
-// const firstName = ref('')
-// const lastName = ref('')
+const userInfo = reactive({
+  id: '',
+  firstName: '',
+  lastName: '',
+  imgUser: ''
+})
 
 const router = useRouter()
 
@@ -61,11 +63,26 @@ const getRole = async () => {
   roles.value = data
 }
 
-// !!!!!!!!!!!!!!!!!!
 const getUSer = async () => {
   const { data } = await supabase.from('user').select()
-  userInfo.value = data
+  Object.values(data).forEach((elem) => {
+    userInfo.id = elem.id
+    userInfo.firstName = elem.first_name
+    userInfo.lastName = elem.last_name
+    userInfo.imgUser = elem.img_user
+  })
 }
+
+const updateUser = async () => {
+  const { error } = await supabase
+    .from('user')
+    .update({ first_name: userInfo.firstName, last_name: userInfo.lastName })
+    .eq('id', userInfo.id)
+
+  visible.value = false
+  if (error) return Error
+}
+
 onMounted(() => {
   getRole()
   getUSer()
