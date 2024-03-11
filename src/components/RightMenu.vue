@@ -11,7 +11,7 @@
     </div>
     <nav class="mt-8">
       <ul class="flex flex-col gap-1">
-        <li v-for="btn in buttonLabel" :key="btn.id">
+        <li v-for="btn in visibilityButton" :key="btn.id">
           <router-link :to="btn.linkRouter">
             <ButtonUi
               @click="
@@ -30,54 +30,81 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import ButtonUi from '@/components/UI/ButtonUi.vue'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
+import { supabase } from '@/config/supabase'
 
 interface btnType {
   id: number
   label: string
   icon: string
+  linkRouter: string
+  display: any
 }
 
+const userRole = ref(null)
+const idUser = ref()
 const activeLabel = ref<number>(1)
 const buttonLabel = ref<btnType[]>([
   {
     id: 1,
     label: 'Проекты',
     icon: 'pi pi-home',
-    linkRouter: '/'
+    linkRouter: '/',
+    display: ''
   },
   {
     id: 2,
     label: 'Клиенты',
     icon: 'pi pi-list',
-    linkRouter: 'companyPanel'
+    linkRouter: 'companyPanel',
+    display: ''
   },
   {
     id: 3,
     label: 'Статистика',
     icon: 'pi pi-file',
-    linkRouter: 'statistic'
+    linkRouter: 'statistic',
+    display: ''
   },
   {
     id: 4,
     label: 'Новый проект',
     icon: 'pi pi-file',
-    linkRouter: 'newProekt'
+    linkRouter: 'newProekt',
+    display: ''
   },
   {
     id: 5,
     label: 'Пользователи',
     icon: 'pi pi-comment',
-    linkRouter: 'settings'
+    linkRouter: 'settings',
+    display: ''
   },
   {
     id: 6,
     label: 'Помощь',
     icon: 'pi pi-comment',
-    linkRouter: 'help'
+    linkRouter: 'help',
+    display: ''
   }
 ])
+
+const getUSer = async () => {
+  const infoUser = await supabase.auth.getUser()
+  idUser.value = infoUser.data.user.id
+
+  const { data } = await supabase.from('profiles').select('role_id').eq('id', idUser.value)
+  userRole.value = data[0].role_id
+}
+
+onMounted(() => {
+  getUSer()
+})
+
+const visibilityButton = computed(() => {
+  return buttonLabel.value.filter((btn) => btn.id !== 5 || userRole.value === 1)
+})
 </script>

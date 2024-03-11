@@ -48,7 +48,7 @@ import { useRouter } from 'vue-router'
 
 const valueSearch = ref<string>('')
 const visible = ref(false)
-const roles = ref([])
+const idUser = ref()
 const userInfo = reactive({
   id: '',
   firstName: '',
@@ -58,13 +58,11 @@ const userInfo = reactive({
 
 const router = useRouter()
 
-const getRole = async () => {
-  const { data } = await supabase.from('role').select()
-  roles.value = data
-}
-
 const getUSer = async () => {
-  const { data } = await supabase.from('profiles').select()
+  const infoUser = await supabase.auth.getUser()
+  idUser.value = infoUser.data.user.id
+
+  const { data } = await supabase.from('profiles').select().eq('id', idUser.value)
   Object.values(data).forEach((elem) => {
     userInfo.id = elem.id
     userInfo.firstName = elem.first_name
@@ -84,7 +82,6 @@ const updateUser = async () => {
 }
 
 onMounted(() => {
-  getRole()
   getUSer()
 })
 
