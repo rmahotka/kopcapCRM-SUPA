@@ -3,12 +3,23 @@
     <div class="card">
       <DataTable
         v-model:editingRows="editingRows"
+        v-model:filters="filters"
         :value="user"
         editMode="row"
         dataKey="id"
+        paginator
+        :rows="10"
+        filterDisplay="row"
+        :globalFilterFields="['last_name', 'first_name', 'role']"
         @row-edit-save="onRowEditSave"
         tableStyle="min-width: 50rem"
       >
+        <template #header>
+          <IconField iconPosition="left">
+            <InputText v-model="filters['global'].value" placeholder="Поиск" />
+          </IconField>
+        </template>
+        <template #empty> Ничего не найдено </template>
         <Column field="last_name" header="Фамилия">
           <template #editor="{ data, field }">
             <InputText v-model="data[field]" />
@@ -48,14 +59,18 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { FilterMatchMode } from 'primevue/api'
 import { supabase } from '@/config/supabase'
 
 const user = ref()
 const editingRows = ref([])
 const roles = ref([])
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.name }
+})
 
 const getUser = async () => {
-  const { data } = await supabase.from('user').select()
+  const { data } = await supabase.from('profiles').select()
   user.value = data
 }
 
@@ -74,7 +89,7 @@ const onRowEditSave = async (event) => {
 
   user.value[index] = newData
   const { erroe } = await supabase
-    .from('user')
+    .from('profiles')
     .update({
       last_name: user.value[index].last_name,
       first_name: user.value[index].first_name,

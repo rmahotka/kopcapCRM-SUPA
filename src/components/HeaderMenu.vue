@@ -64,7 +64,7 @@ const getRole = async () => {
 }
 
 const getUSer = async () => {
-  const { data } = await supabase.from('user').select()
+  const { data } = await supabase.from('profiles').select()
   Object.values(data).forEach((elem) => {
     userInfo.id = elem.id
     userInfo.firstName = elem.first_name
@@ -75,7 +75,7 @@ const getUSer = async () => {
 
 const updateUser = async () => {
   const { error } = await supabase
-    .from('user')
+    .from('profiles')
     .update({ first_name: userInfo.firstName, last_name: userInfo.lastName })
     .eq('id', userInfo.id)
 
