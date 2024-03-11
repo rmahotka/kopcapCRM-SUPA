@@ -2,7 +2,6 @@ import 'primeicons/primeicons.css'
 import './assets/fonts.css'
 import './assets/main.css'
 import 'primevue/resources/themes/lara-light-indigo/theme.css'
-import { supabase } from '@/config/supabase'
 
 import { createApp } from 'vue'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
