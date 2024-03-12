@@ -29,8 +29,10 @@
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
         >
           <form action="" class="flex flex-col gap-2">
-            <InputText type="text" v-model="userInfo.firstName" />
-            <InputText type="text" v-model="userInfo.lastName" />
+            <label for="first-name">Имя</label>
+            <InputText id="first-name" type="text" v-model="userInfo.firstName" />
+            <label for="last-name">Фамилия</label>
+            <InputText id="last-name" type="text" v-model="userInfo.lastName" />
 
             <Button @click="updateUser">Сохранить</Button>
           </form>

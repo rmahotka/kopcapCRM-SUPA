@@ -58,7 +58,7 @@ import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
 const valueLogin = ref<string>('')
 
 const handlePasswordReset = async () => {
-  const { data, error } = await supabase.auth.resetPasswordForEmail(valueLogin, {})
+  await supabase.auth.resetPasswordForEmail(valueLogin, {})
 }
 </script>
 

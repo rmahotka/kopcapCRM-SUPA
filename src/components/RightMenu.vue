@@ -30,7 +30,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import ButtonUi from '@/components/UI/ButtonUi.vue'
 import LogoKopcap from '@/assets/icon/LogoKopcap.vue'

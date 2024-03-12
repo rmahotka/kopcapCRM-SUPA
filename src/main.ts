@@ -22,6 +22,8 @@ import Message from 'primevue/message'
 import InlineMessage from 'primevue/inlinemessage'
 import Dialog from 'primevue/dialog'
 import Dropdown from 'primevue/dropdown'
+import Textarea from 'primevue/textarea'
+import Chart from 'primevue/chart'
 
 import App from './App.vue'
 
@@ -46,5 +48,7 @@ app.component('Message', Message)
 app.component('InlineMessage', InlineMessage)
 app.component('Dialog', Dialog)
 app.component('Dropdown', Dropdown)
+app.component('Textarea', Textarea)
+app.component('Chart', Chart)
 
 app.mount('#app')

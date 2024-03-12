@@ -26,12 +26,12 @@
       </Column>
       <Column field="how_did_you_find" header="Как нашли нас">
         <template #editor="{ data, field }">
-          <InputText v-model="data[field]" />
+          <Textarea v-model="data[field]" rows="5" cols="30" />
         </template>
       </Column>
       <Column field="comment" header="Коментарий">
         <template #editor="{ data, field }">
-          <InputText v-model="data[field]" />
+          <Textarea v-model="data[field]" rows="5" cols="30" />
         </template>
       </Column>
       <Column
