@@ -1,5 +1,23 @@
 <template>
   <div class="bg-white m-6 rounded-xl">
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Профиль"
+      :style="{ width: '50rem' }"
+      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+    >
+      <form action="" class="flex flex-col gap-2">
+        <label for="company-name">Название</label>
+        <InputText id="company-name" type="text" v-model="companyInsert.name" />
+        <label for="company-comment">Комментарий</label>
+        <InputText id="company-comment" type="text" v-model="companyInsert.comment" />
+        <label for="company-how">Как нашли нас</label>
+        <InputText id="company-how" type="text" v-model="companyInsert.how_did_you_find" />
+        <Button @click="addCompany">Сохранить</Button>
+      </form>
+    </Dialog>
+
     <DataTable
       v-model:editingRows="editingRows"
       v-model:filters="filters"
@@ -14,9 +32,10 @@
       tableStyle="min-width: 50rem"
     >
       <template #header>
-        <IconField iconPosition="left">
+        <div class="flex justify-between">
           <InputText v-model="filters['global'].value" placeholder="Поиск по названию" />
-        </IconField>
+          <Button @click="visible = true" label="Добаить компанию" />
+        </div>
       </template>
       <template #empty> Ничего не найдено </template>
       <Column field="name" header="Название">
@@ -44,12 +63,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { FilterMatchMode } from 'primevue/api'
 import { supabase } from '@/config/supabase'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const company = ref()
+const visible = ref(false)
 const editingRows = ref([])
+const companyInsert = reactive({
+  id: '',
+  name: '',
+  comment: '',
+  how_did_you_find: ''
+})
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.name }
 })
@@ -73,6 +102,21 @@ const onRowEditSave = async (event) => {
     .eq('id', company.value[index].id)
     .select()
 
+  if (error) return Error
+}
+
+const addCompany = async () => {
+  const { error } = await supabase.from('company').insert({
+    name: companyInsert.name,
+    comment: companyInsert.comment,
+    how_did_you_find: companyInsert.how_did_you_find
+  })
+
+  companyInsert.name = ''
+  companyInsert.comment = ''
+  companyInsert.how_did_you_find = ''
+  visible.value = false
+  router.go(0)
   if (error) return Error
 }
 

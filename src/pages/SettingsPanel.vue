@@ -15,9 +15,7 @@
         tableStyle="min-width: 50rem"
       >
         <template #header>
-          <IconField iconPosition="left">
-            <InputText v-model="filters['global'].value" placeholder="Поиск" />
-          </IconField>
+          <InputText v-model="filters['global'].value" placeholder="Поиск" />
         </template>
         <template #empty> Ничего не найдено </template>
         <Column field="last_name" header="Фамилия">
