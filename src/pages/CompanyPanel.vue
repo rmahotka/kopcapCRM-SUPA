@@ -58,7 +58,34 @@
         style="width: 10%; min-width: 8rem"
         bodyStyle="text-align:center"
       ></Column>
+      <Column field="id" :exportable="false" style="min-width: 8rem">
+        <template #body="slotProps">
+          <Button
+            icon="pi pi-trash"
+            outlined
+            rounded
+            severity="danger"
+            @click="confirmDeleteProduct(slotProps.data)"
+          />
+        </template>
+      </Column>
     </DataTable>
+
+    <Dialog
+      v-model:visible="deleteProductDialog"
+      :style="{ width: '450px' }"
+      header="Удаление"
+      :modal="true"
+    >
+      <div class="confirmation-content">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+        <span>Удалить клиента?</span>
+      </div>
+      <template #footer>
+        <Button label="Нет" icon="pi pi-times" text @click="deleteProductDialog = false" />
+        <Button label="Да" icon="pi pi-check" text @click="deleteProduct" />
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -66,19 +93,19 @@
 import { ref, onMounted, reactive } from 'vue'
 import { FilterMatchMode } from 'primevue/api'
 import { supabase } from '@/config/supabase'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
+const oneCompany = ref({})
 const company = ref()
 const visible = ref(false)
 const editingRows = ref([])
+const deleteProductDialog = ref(false)
 const companyInsert = reactive({
   id: '',
   name: '',
   comment: '',
   how_did_you_find: ''
 })
+
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.name }
 })
@@ -116,13 +143,24 @@ const addCompany = async () => {
   companyInsert.comment = ''
   companyInsert.how_did_you_find = ''
   visible.value = false
-  router.go(0)
+  getCompany()
   if (error) return Error
+}
+
+const confirmDeleteProduct = (comp) => {
+  oneCompany.value = comp
+  deleteProductDialog.value = true
+}
+
+const deleteProduct = async () => {
+  const { error } = await supabase.from('company').delete().eq('id', oneCompany.value.id)
+  deleteProductDialog.value = false
+  oneCompany.value = {}
+  getCompany()
+  if (error) return error
 }
 
 onMounted(() => {
   getCompany()
 })
 </script>
-
-<style lang="scss" scoped></style>

@@ -51,21 +51,21 @@ const buttonLabel = ref<btnType[]>([
   {
     id: 1,
     label: 'Проекты',
-    icon: 'pi pi-home',
+    icon: 'pi pi-folder',
     linkRouter: '/',
     display: ''
   },
   {
     id: 2,
     label: 'Клиенты',
-    icon: 'pi pi-list',
+    icon: 'pi pi-building',
     linkRouter: 'companyPanel',
     display: ''
   },
   {
     id: 3,
     label: 'Статистика',
-    icon: 'pi pi-file',
+    icon: 'pi pi-chart-line',
     linkRouter: 'statistic',
     display: ''
   },
@@ -79,7 +79,7 @@ const buttonLabel = ref<btnType[]>([
   {
     id: 5,
     label: 'Пользователи',
-    icon: 'pi pi-comment',
+    icon: 'pi pi-users',
     linkRouter: 'settings',
     display: ''
   },

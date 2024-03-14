@@ -1,12 +1,5 @@
 <template>
-  <div class="bg-white py-4 px-8 w-full flex justify-between items-center">
-    <span class="relative">
-      <i
-        class="pi pi-search absolute top-2/4 -mt-2 left-3 text-surface-400 dark:text-surface-600"
-      />
-      <InputText v-model="valueSearch" placeholder="Поиск" class="py-1 pl-10" />
-    </span>
-
+  <div class="bg-white py-4 px-8 w-full flex justify-end items-center">
     <div class="flex items-center">
       <p class="pi pi-bell mr-3 cursor-pointer"></p>
 
