@@ -34,16 +34,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { supabase } from '@/config/supabase'
 
-const visible = ref(false)
+const visible = ref<boolean>(false)
 const selectedStage = ref()
-const prjects = ref([])
-const company = ref([])
-const stage = ref([])
-const idOrder = ref()
-const idStage = ref()
+const prjects = ref<string[]>([])
+const company = ref<string[]>([])
+const stage = ref<string[]>([])
+const idOrder = ref<number>()
+const idStage = ref<number>()
+const userRole = ref<number>()
+const idUser = ref<number>()
+
+// Пользователь
+const getUser = async () => {
+  const infoUser = await supabase.auth.getUser()
+  idUser.value = infoUser.data.user.id
+
+  const { data, error } = await supabase.from('profiles').select('role_id').eq('id', idUser.value)
+  userRole.value = data
+
+  if (error) return Error
+}
 
 const getProjects = async () => {
   const { data, error } = await supabase.from('order').select()
@@ -66,12 +79,12 @@ const getStage = async () => {
   if (error) return Error
 }
 
-const getCompanyRequest = (getId) => {
+const getCompanyRequest = (getId: number) => {
   const text = company.value.find((idSerch) => idSerch.id === getId)
   return text ? text.name : ''
 }
 
-const getStageRequest = (getId) => {
+const getStageRequest = (getId: number) => {
   const text = stage.value.find((idSerch) => idSerch.id === getId)
   return text ? text.name : ''
 }
@@ -88,14 +101,29 @@ const updateStage = async () => {
   if (error) return Error
 }
 
-const getOpenModal = (id, stageId) => {
+const getOpenModal = (id: number, stageId: number) => {
   idOrder.value = id
   idStage.value = stageId
   visible.value = true
   selectedStage.value = stage.value[idStage.value - 1]
 }
 
+switch (userRole.value) {
+  case 1: {
+    break
+  }
+  case 2: {
+    computed(() => {
+      return company.value.filter((item) => item.id_stage === 2)
+    })
+    break
+  }
+  case 3: {
+    break
+  }
+}
+
 onMounted(() => {
-  getProjects(), getCompany(), getStage()
+  getProjects(), getCompany(), getStage(), getUser()
 })
 </script>

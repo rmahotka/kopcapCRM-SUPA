@@ -41,7 +41,6 @@ import { ref, onMounted, reactive } from 'vue'
 import { supabase } from '@/config/supabase'
 import { useRouter } from 'vue-router'
 
-const valueSearch = ref<string>('')
 const visible = ref(false)
 const idUser = ref()
 const userInfo = reactive({

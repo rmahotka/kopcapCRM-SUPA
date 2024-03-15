@@ -59,8 +59,8 @@ const nameProject = ref<string>('')
 const sumProject = ref<string>('')
 const company = ref<Select[]>([])
 const stage = ref<Select[]>([])
-const selectCompany = ref()
-const selectStage = ref()
+const selectCompany = ref<number | any>()
+const selectStage = ref<number | any>()
 
 const toast = useToast()
 

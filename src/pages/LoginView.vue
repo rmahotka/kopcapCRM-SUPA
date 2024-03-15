@@ -68,9 +68,9 @@ import LogoKopcap from '@/assets/icon/LogoKopcap.vue'
 
 const router = useRouter()
 
-const email = ref(null)
-const password = ref(null)
-const errMessage = ref(null)
+const email = ref<string | null>(null)
+const password = ref<string | null>(null)
+const errMessage = ref<string | null>(null)
 
 const handleSignin = async () => {
   try {
@@ -80,7 +80,7 @@ const handleSignin = async () => {
     })
     if (error) throw error
     router.push({ name: 'Homepanel' })
-  } catch (error) {
+  } catch (error: string | any) {
     errMessage.value = `ERROR: ${error.message}`
     setTimeout(() => {
       errMessage.value = null

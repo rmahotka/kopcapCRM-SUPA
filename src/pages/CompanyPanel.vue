@@ -157,7 +157,7 @@ const deleteProduct = async () => {
   deleteProductDialog.value = false
   oneCompany.value = {}
   getCompany()
-  if (error) return error
+  if (error) return Error
 }
 
 onMounted(() => {

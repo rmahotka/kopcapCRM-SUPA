@@ -3,7 +3,7 @@
     <RightMenu />
     <div class="w-full">
       <HeaderMenu />
-      <router-view class="p-5"></router-view>
+      <router-view></router-view>
     </div>
   </div>
 </template>

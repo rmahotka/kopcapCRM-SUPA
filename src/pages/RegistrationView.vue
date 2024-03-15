@@ -86,7 +86,7 @@ const router = useRouter()
 const email = ref(null)
 const password = ref(null)
 const confirmPassword = ref(null)
-const errMessage = ref(null)
+const errMessage = ref<String | null>(null)
 
 const handleSubmit = async () => {
   if (password.value === confirmPassword.value) {
