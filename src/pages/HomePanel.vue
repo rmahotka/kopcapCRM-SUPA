@@ -63,10 +63,11 @@ const getUser = async () => {
     .select('role_id')
     .eq('id', userStore.state.user.id)
   userRole.value = data
+  console.log(userRole.value[0].role_id)
 
   switch (userRole.value[0].role_id) {
     case 1: {
-      console.log(prjects.value[1].id_stage)
+      console.log(1)
       break
     }
     case 2: {
