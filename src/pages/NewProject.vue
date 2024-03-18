@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white m-6 rounded-xl relative">
+  <div class="bg-white m-6 rounded-xl relative p-3">
     <Toast />
     <form class="grid grid-cols-2 gap-4" @submit.prevent="insetrProject">
       <div class="flex flex-col">
