@@ -34,29 +34,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { supabase } from '@/config/supabase'
+import { useUserStore } from '@/stores/users'
+
+const userStore = useUserStore()
 
 const visible = ref<boolean>(false)
 const selectedStage = ref()
-const prjects = ref<string[]>([])
+const prjects = ref<string[] | any>([])
 const company = ref<string[]>([])
 const stage = ref<string[]>([])
 const idOrder = ref<number>()
 const idStage = ref<number>()
 const userRole = ref<number>()
-const idUser = ref<number>()
-
-// Пользователь
-const getUser = async () => {
-  const infoUser = await supabase.auth.getUser()
-  idUser.value = infoUser.data.user.id
-
-  const { data, error } = await supabase.from('profiles').select('role_id').eq('id', idUser.value)
-  userRole.value = data
-
-  if (error) return Error
-}
 
 const getProjects = async () => {
   const { data, error } = await supabase.from('order').select()
@@ -106,21 +97,6 @@ const getOpenModal = (id: number, stageId: number) => {
   idStage.value = stageId
   visible.value = true
   selectedStage.value = stage.value[idStage.value - 1]
-}
-
-switch (userRole.value) {
-  case 1: {
-    break
-  }
-  case 2: {
-    computed(() => {
-      return company.value.filter((item) => item.id_stage === 2)
-    })
-    break
-  }
-  case 3: {
-    break
-  }
 }
 
 onMounted(() => {
