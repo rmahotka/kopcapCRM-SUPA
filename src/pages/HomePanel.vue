@@ -3,7 +3,7 @@
     <div class="card grid grid-cols-2 gap-5 p-3">
       <div
         class="bg-gray-100 p-4 rounded-md border border-gray-300 cursor-pointer hover:shadow-md duration-200"
-        v-for="project in prjects"
+        v-for="project in filterProject"
         :key="project.id"
         @click="getOpenModal(project.id, project.id_stage)"
       >
@@ -47,11 +47,63 @@ const company = ref<string[]>([])
 const stage = ref<string[]>([])
 const idOrder = ref<number>()
 const idStage = ref<number>()
-const userRole = ref<number>()
+const userRole = ref<number | any>()
+const filterProject = ref()
 
 const getProjects = async () => {
   const { data, error } = await supabase.from('order').select()
   prjects.value = data
+
+  if (error) return Error
+}
+
+// Пользователь
+const getUser = async () => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('role_id')
+    .eq('id', userStore.state.user.id)
+  userRole.value = data
+
+  switch (userRole.value[0].role_id) {
+    case 1: {
+      filterProject.value = prjects.value.filter(
+        (item) =>
+          item.id_stage == 1 ||
+          item.id_stage == 2 ||
+          item.id_stage == 3 ||
+          item.id_stage == 4 ||
+          item.id_stage == 5 ||
+          item.id_stage == 6 ||
+          item.id_stage == 7 ||
+          item.id_stage == 8
+      )
+      break
+    }
+    case 2: {
+      filterProject.value = prjects.value.filter(
+        (item) => item.id_stage == 1 || item.id_stage == 7 || item.id_stage == 2
+      )
+      break
+    }
+    case 3: {
+      filterProject.value = prjects.value.filter(
+        (item) => item.id_stage == 3 || item.id_stage == 7 || item.id_stage == 4
+      )
+      break
+    }
+    case 4: {
+      filterProject.value = prjects.value.filter((item) => item.id_stage == 5 || item.id_stage == 6)
+      break
+    }
+    case 5: {
+      filterProject.value = prjects.value.filter((item) => item.id_stage == 8 || item.id_stage == 3)
+      break
+    }
+    default: {
+      break
+    }
+  }
 
   if (error) return Error
 }
