@@ -24,8 +24,8 @@ import Dialog from 'primevue/dialog'
 import Dropdown from 'primevue/dropdown'
 import Textarea from 'primevue/textarea'
 import Chart from 'primevue/chart'
-import ToastService from 'primevue/toastservice';
-import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice'
+import Toast from 'primevue/toast'
 
 import App from './App.vue'
 
@@ -36,7 +36,7 @@ app.use(PrimeVue, { ripple: true })
 app.use(router)
 app.use(pinia)
 app.use(autoAnimatePlugin)
-app.use(ToastService);
+app.use(ToastService)
 
 app.component('InputText', InputText)
 app.component('Avatar', Avatar)
