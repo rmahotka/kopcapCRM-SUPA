@@ -22,7 +22,7 @@ const routes = [
     },
     children: [
       { path: '', component: Login, name: 'login' },
-      { path: 'registration', component: Registration, name: 'registration' }
+      { path: 'registration', component: Registration, name: 'registration' },
       { path: 'forgotPassword', component: ForgotPassword, name: 'forgotpassword' }
     ]
   },
