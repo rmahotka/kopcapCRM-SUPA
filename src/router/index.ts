@@ -1,7 +1,7 @@
 import SignForm from '@/layouts/SignForm.vue'
 import WorkPanel from '@/layouts/WorkPanel.vue'
 import CompanyPanel from '@/pages/CompanyPanel.vue'
-// import ForgotPassword from '@/pages/ForgotPassword.vue'
+import ForgotPassword from '@/pages/ForgotPassword.vue'
 import HelpPanel from '@/pages/HelpPanel.vue'
 import HomePanel from '@/pages/HomePanel.vue'
 import Login from '@/pages/LoginView.vue'
@@ -23,7 +23,7 @@ const routes = [
     children: [
       { path: '', component: Login, name: 'login' },
       { path: 'registration', component: Registration, name: 'registration' }
-      // { path: 'forgotPassword', component: ForgotPassword, name: 'forgotpassword' }
+      { path: 'forgotPassword', component: ForgotPassword, name: 'forgotpassword' }
     ]
   },
   {
