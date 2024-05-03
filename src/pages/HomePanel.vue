@@ -1,5 +1,11 @@
 <template>
   <div class="bg-white m-6 rounded-xl">
+    <Dialog v-model:visible="visibleAdd" modal header="Новый проект">
+      <NewProject />
+    </Dialog>
+
+    <Button type="button" label="Добавить" @click="visibleAdd = true"></Button>
+
     <div class="card grid grid-cols-2 gap-5 p-3">
       <div
         class="bg-gray-100 p-4 rounded-md border border-gray-300 cursor-pointer hover:shadow-md duration-200"
@@ -38,9 +44,12 @@ import { ref, onMounted } from 'vue'
 import { supabase } from '@/config/supabase'
 import { useUserStore } from '@/stores/users'
 
+import NewProject from './NewProject.vue'
+
 const userStore = useUserStore()
 
 const visible = ref<boolean>(false)
+const visibleAdd = ref<boolean>(false)
 const selectedStage = ref()
 const prjects = ref<string[] | any>([])
 const company = ref<string[]>([])

@@ -8,24 +8,7 @@ import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import router from '@/router/'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
-
-import InputText from 'primevue/inputtext'
-import Avatar from 'primevue/avatar'
-import Menu from 'primevue/menu'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import Tag from 'primevue/tag'
-import Button from 'primevue/button'
-import Password from 'primevue/password'
-import InputMask from 'primevue/inputmask'
-import Message from 'primevue/message'
-import InlineMessage from 'primevue/inlinemessage'
-import Dialog from 'primevue/dialog'
-import Dropdown from 'primevue/dropdown'
-import Textarea from 'primevue/textarea'
-import Chart from 'primevue/chart'
-import ToastService from 'primevue/toastservice'
-import Toast from 'primevue/toast'
+import componentsPrime from './components/componentsPrime'
 
 import App from './App.vue'
 
@@ -36,23 +19,7 @@ app.use(PrimeVue, { ripple: true })
 app.use(router)
 app.use(pinia)
 app.use(autoAnimatePlugin)
-app.use(ToastService)
 
-app.component('InputText', InputText)
-app.component('Avatar', Avatar)
-app.component('Menu', Menu)
-app.component('DataTable', DataTable)
-app.component('Column', Column)
-app.component('Tag', Tag)
-app.component('Button', Button)
-app.component('Password', Password)
-app.component('InputMask', InputMask)
-app.component('Message', Message)
-app.component('InlineMessage', InlineMessage)
-app.component('Dialog', Dialog)
-app.component('Dropdown', Dropdown)
-app.component('Textarea', Textarea)
-app.component('Chart', Chart)
-app.component('Toast', Toast)
+componentsPrime.forEach((component) => app.component(component.name, component))
 
 app.mount('#app')

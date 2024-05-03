@@ -70,13 +70,6 @@ const buttonLabel = ref<btnType[]>([
     display: ''
   },
   {
-    id: 4,
-    label: 'Новый проект',
-    icon: 'pi pi-file',
-    linkRouter: 'newProekt',
-    display: ''
-  },
-  {
     id: 5,
     label: 'Пользователи',
     icon: 'pi pi-users',
